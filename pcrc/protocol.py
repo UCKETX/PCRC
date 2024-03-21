@@ -27,6 +27,7 @@ MC_1_17_1 = Protocol.from_mc_version('1.17.1')
 MC_1_18   = Protocol.from_mc_version('1.18')
 MC_1_18_1 = Protocol.from_mc_version('1.18.1')
 MC_1_18_2 = Protocol.from_mc_version('1.18.2')
+MC_1_19_2 = Protocol.from_mc_version('1.19.2')
 
 ALL_PROTOCOL: List[Protocol] = list(filter(lambda o: isinstance(o, Protocol), globals().values()))
 SUPPORTED_MINECRAFT_VERSIONS: List[str] = list(map(lambda p: p.mc_version, ALL_PROTOCOL))
