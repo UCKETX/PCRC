@@ -37,27 +37,26 @@ class MapPacket(Packet):
             return 'bytearray(...)'
         return super(MapPacket, self).field_string(field)
 
-    if context.protocol_later_eq(759):
-        class MapIcon(MutableRecord):
-            __slots__ = 'type', 'direction', 'location', 'display_name'
-
-            def __init__(self, type, direction, location, display_name=None):
-                self.type = type
-                self.direction = direction
-                self.location = location
-                self.display_name = display_name
-    else:
-        class MapIcon(MutableRecord):
-            __slots__ = 'type', 'x', 'z', 'direction', 'location', 'has_display_name', 'display_name'
-
-            def __init__(self, type, x, z, direction, location, has_display_name, display_name=None):
-                self.type = type
-                self.x = x
-                self.z = z
-                self.direction = direction
-                self.location = location
-                self.has_display_name
-                self.display_name = display_name
+    def field_string(self):
+        if self.context.protocol_later_eq(759):
+            class MapIcon(MutableRecord):
+                __slots__ = 'type', 'direction', 'location', 'display_name'
+                def __init__(self, type, direction, location, display_name=None):
+                    self.type = type
+                    self.direction = direction
+                    self.location = location
+                    self.display_name = display_name
+        else:
+            class MapIcon(MutableRecord):
+                __slots__ = 'type', 'x', 'z', 'direction', 'location', 'has_display_name', 'display_name'
+                def __init__(self, type, x, z, direction, location, has_display_name, display_name=None):
+                    self.type = type
+                    self.x = x
+                    self.z = z
+                    self.direction = direction
+                    self.location = location
+                    self.has_display_name
+                    self.display_name = display_name
 
     class Map(MutableRecord):
         __slots__ = ('id', 'scale', 'icons', 'pixels', 'width', 'height',
