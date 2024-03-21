@@ -9,7 +9,7 @@ from minecraft.networking.types import (
 class MapPacket(Packet):
     @staticmethod
     def get_id(context):
-        return 0x24 if context.protocol_later_eq(759) else \
+        return 0x24 if context.protocol_later_eq(760) else \
                0x27 if context.protocol_later_eq(755) else \
                0x25 if context.protocol_later_eq(741) else \
                0x26 if context.protocol_later_eq(721) else \
@@ -38,7 +38,7 @@ class MapPacket(Packet):
         return super(MapPacket, self).field_string(field)
 
     def field_string(self):
-        if self.context.protocol_later_eq(759):
+        if self.context.protocol_later_eq(760):
             class MapIcon(MutableRecord):
                 __slots__ = 'type', 'direction', 'location', 'display_name'
                 def __init__(self, type, direction, location, display_name=None):
