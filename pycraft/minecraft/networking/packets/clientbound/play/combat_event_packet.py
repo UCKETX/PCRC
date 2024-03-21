@@ -146,14 +146,14 @@ class SpecialisedCombatEventPacket(CombatEventPacket):
 @CombatEventPacket.EnterCombatEvent.register  # virtual subclass
 class EnterCombatEventPacket(SpecialisedCombatEventPacket):
     packet_name = 'enter combat event'
-    id = 0x32 if context.protocol_later_eq(759) else 0x34
+    id = 0x32
     definition = []
 
 
 @CombatEventPacket.EndCombatEvent.register  # virtual subclass
 class EndCombatEventPacket(SpecialisedCombatEventPacket):
     packet_name = 'end combat event'
-    id = 0x31 if context.protocol_later_eq(759) else 0x33
+    id = 0x31
     definition = [
         {'duration': VarInt},
         {'entity_id': Integer}]
