@@ -1,0 +1,73 @@
+name: CI for PCRC
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  package:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+
+    - name: Cache files
+      uses: actions/cache@v2
+      with:
+        path: ~\AppData\Local\pip\Cache
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Generate single file exe using pyinstaller
+      run: |
+        pip install pyinstaller
+        pyinstaller PCRC.spec
+        md distrubutions
+        move dist\PCRC.exe distrubutions\
+
+    - name: Apply UPX compression
+      uses: crazy-max/ghaction-upx@v1
+      with:
+        version: latest
+        files: |
+          distrubutions\PCRC.exe
+        args: -fq
+
+    - name: Pack PCRC into pyz
+      run: |
+        md pycraft_temp
+        move pycraft\minecraft pycraft_temp\
+        move pycraft\LICENSE pycraft_temp\
+        Remove-Item -Recurse -Force pycraft
+        md pycraft
+        move pycraft_temp\minecraft pycraft\
+        move pycraft_temp\LICENSE pycraft\
+
+        pip install mcdreforged  # this is required for packing PCRC
+        python -m mcdreforged pack -o ./distrubutions
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: PCRC distributions for ${{ github.sha }}
+        path: distrubutions
+
+    - name: Publish distribution to release
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          distrubutions\PCRC.pyz
+          distrubutions\PCRC.exe

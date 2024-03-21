@@ -1,0 +1,23 @@
+# Python
+/venv
+**/__pycache__
+
+# IDE
+/.idea
+
+# PCRC outputs
+/config.json
+/token.json
+/logs
+/PCRC_recordings
+/PCRC_recording_temp
+/temp_recording
+
+# Build files
+/build
+/dist
+/release
+/*.pyz
+
+# Dev files
+/protocol_tool
