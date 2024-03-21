@@ -37,7 +37,7 @@ class MapPacket(Packet):
             return 'bytearray(...)'
         return super(MapPacket, self).field_string(field)
 
-     if context.protocol_later_eq(759):
+    if context.protocol_later_eq(759):
         class MapIcon(MutableRecord):
             __slots__ = 'type', 'direction', 'location', 'display_name'
 
@@ -46,7 +46,7 @@ class MapPacket(Packet):
                 self.direction = direction
                 self.location = location
                 self.display_name = display_name
-     else:
+    else:
         class MapIcon(MutableRecord):
             __slots__ = 'type', 'x', 'z', 'direction', 'location', 'has_display_name', 'display_name'
 
